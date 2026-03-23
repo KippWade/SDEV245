@@ -1,6 +1,6 @@
-# SDEV 245 - Module 1
-## March 23, 2026 - Kipp Shinabarger
-## Simple RBAC Demo in Node.js
+## SDEV 245 - Module 1
+### March 23, 2026 - Kipp Shinabarger
+### Simple RBAC Demo in Node.js
 
 Basic Node.js script to demonstrate **Authentication** and **Role-Based Access Control (RBAC)**.
 
