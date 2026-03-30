@@ -22,11 +22,11 @@ This project demonstrates encryption and decryption of a short message using bot
 - Clear console output for demonstration.
 
 ## Project Structure
-SDEV245/Module2/
-├── app.js          # Main encryption script
-├── readme.md
-├── output.txt      # Generated: keys, inputs, and outputs
-└── .gitignore
+SDEV245/Module2/  
+├── app.js              # Main encryption script  
+├── README.md  
+├── output.txt          # Generated: keys, inputs, and outputs  
+└── .gitignore  
 
 ## How to Run
 ```bash
