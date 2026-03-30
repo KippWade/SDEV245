@@ -25,8 +25,7 @@ This project demonstrates encryption and decryption of a short message using bot
 SDEV245/Module2/  
 ├── app.js              # Main encryption script  
 ├── README.md  
-├── output.txt          # Generated: keys, inputs, and outputs  
-└── .gitignore  
+└── output.txt          # Generated: keys, inputs, and outputs  
 
 ## How to Run
 ```bash
