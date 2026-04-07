@@ -1,33 +1,41 @@
-# Module 3 Assignment - Authentication & Cryptography
+# Module 3 Assignment  
+**User Authentication with Role-Based Access Control + Cryptography**
 
-## Project Overview
-A Node.js Express application with user authentication, Role-Based Access Control (RBAC), and cryptographic features.
+## Project Description
+This Node.js application demonstrates secure user login, role-based access control (RBAC), and core cryptographic concepts as required by the assignment.
 
-## Learning Outcomes Demonstrated
+## Learning Outcomes Addressed
 
 ### 3.1 Describe how randomness affects cryptographic algorithm strength
-- Explained in **Randomness & Security** section below.
-- RSA key generation and bcrypt salting rely on strong randomness.
+**Key Concept: Entropy**
+
+- True randomness (high entropy) is critical for cryptographic security.  
+- Without sufficient entropy, even strong algorithms become weak because keys become predictable.  
+- This project uses cryptographically secure random number generation for:
+  - Password salting with **bcrypt**
+  - RSA key pair generation
+  - JWT token signing
+
+**Resources Studied:**
+- [True Randomness Can’t be Left to Chance: Why entropy is important for information security](https://www.link-provided-in-canvas.com)
+- [Entropy (computing)](https://www.link-provided-in-canvas.com)
+- [Random numbers](https://www.link-provided-in-canvas.com)
+- YouTube: [How secure is 256 bit security?](https://youtu.be/... ) [5:05]
 
 ### 4.1 Encrypt a message using a simple substitution cipher
-- **Caesar Cipher** implemented (`/protected/caesar`)
+- Implemented **Caesar Cipher** (classic substitution cipher)
 
 ### 4.2 Implement a SHA-256 hash to verify file integrity
-- Text hashing: `/protected/hash-text`
-- **File upload + SHA-256 hashing**: `/protected/hash-file`
+- SHA-256 hashing for both text and uploaded files
 
 ### 4.3 Illustrate the process of digital signatures using private/public key pairs
-- RSA Digital Signature: `/protected/sign` and `/protected/verify`
+- RSA-based digital signature generation and verification
 
-## Features
-- User Registration & Login (JWT)
-- Role-Based Access Control (Admin / User)
-- Caesar Cipher Encryption/Decryption
-- SHA-256 Hashing (text + files)
-- RSA Digital Signatures
-- File Upload for integrity checking
+**Supporting Resources:**
+- [Digital signatures: What they are & how they work](https://www.link-provided-in-canvas.com)
+- [Understanding Digital Signatures](https://www.link-provided-in-canvas.com)
+- [What is SHA-256?](https://www.link-provided-in-canvas.com)
+- [What is the SHA-256 algorithm, and how does it work?](https://www.link-provided-in-canvas.com)
+- [Common encryption types explained](https://www.link-provided-in-canvas.com)
+- [Types of Encryption Algorithms + Pros and Cons](https://www.link-provided-in-canvas.com)
 
-## How to Run
-```bash
-npm install
-node server.js
