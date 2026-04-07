@@ -1,8 +1,14 @@
 {
+  "name": "module3-cryptography",
+  "version": "1.0.0",
+  "description": "SHA-256, Caesar Cipher, and Digital Signature demo",
+  "main": "hash.js",
+  "scripts": {
+    "hash": "node hash.js",
+    "caesar": "node caesar.js",
+    "sign": "node signature.js"
+  },
   "dependencies": {
-    "bcryptjs": "^3.0.3",
-    "body-parser": "^2.2.2",
-    "express": "^5.2.1",
-    "jsonwebtoken": "^9.0.3"
+    "crypto": "^1.0.1"
   }
 }
