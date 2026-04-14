@@ -1,0 +1,16 @@
+{
+  "name": "module4-secure-hash-encrypt",
+  "version": "1.0.0",
+  "description": "CLI tool for hashing with SHA-256 and encrypting with AES-256-GCM (Module 4 Assignment)",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
+  },
+  "keywords": ["crypto", "sha256", "aes-gcm", "encryption", "integrity"],
+  "author": "Your Name",
+  "license": "MIT"
+}
