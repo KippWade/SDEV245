@@ -1,11 +1,11 @@
 # Secure Hash & Encrypt Tool
 
-A simple Node.js CLI that demonstrates secure handling of user input through hashing and symmetric encryption.
+A simple Node.js CLI to demonstrate secure handling of user input through hashing and symmetric encryption.
 
 ## Features
 - Accepts user message via CLI
-- Computes SHA-256 hash for **integrity**
-- Encrypts using **AES-256-GCM** (authenticated encryption)
+- Computes SHA-256 hash for integrity
+- Encrypts using AES-256-GCM (authenticated encryption)
 - Decrypts and verifies integrity by comparing hashes
 
 ## How it Upholds CIA Triad
@@ -14,8 +14,8 @@ A simple Node.js CLI that demonstrates secure handling of user input through has
 The original message is encrypted with AES-256-GCM using a 256-bit random key. Only someone with the exact key can decrypt it. AES-GCM is a strong, modern symmetric cipher recommended for most applications.
 
 **Integrity**:  
-- A separate **SHA-256** hash of the plaintext is computed before encryption and stored with the ciphertext.
-- After decryption, the hash is recomputed and compared. Any tampering (even a single bit) will cause a mismatch.
+- A separate SHA-256 hash of the plain text is generated before encryption and stored with the ciphertext.
+- After decryption, the hash is regenerated and compared. Any tampering (even a single bit) will cause a mismatch.
 - Additionally, AES-GCM provides built-in integrity via the authentication tag, which prevents decryption of modified ciphertexts.
 
 **Availability**:  
@@ -23,12 +23,12 @@ The process is fast, uses only built-in Node.js `crypto` module (no external dep
 
 ## Role of Entropy and Key Generation
 
-**Entropy** refers to the randomness/unpredictability of data. High entropy is crucial for cryptographic keys — low-entropy keys (e.g., "password123") are vulnerable to brute-force or dictionary attacks.
+Entropy refers to the randomness/unpredictability of data. High entropy is crucial for cryptographic keys — low-entropy keys (e.g., "password123") are vulnerable to brute-force or dictionary attacks.
 
 In this implementation:
-- The key is generated with `crypto.randomBytes(32)` — this uses cryptographically secure pseudo-random number generators (CSPRNG) provided by the operating system (e.g., `/dev/urandom` on Linux).
+- The key is generated with `crypto.randomBytes(32)` — this uses CSPRNG (cryptographically secure pseudo-random number generators) provided by the operating system (e.g., `/dev/urandom` on Linux).
 - 32 bytes = 256 bits provides extremely high entropy (2^256 possible keys — infeasible to brute-force).
-- A new random **Initialization Vector (IV)** (12 bytes for GCM) is generated for every encryption. Reusing an IV with the same key would break security.
+- A new random Initialization Vector (IV) (12 bytes for GCM) is generated for every encryption. Reusing an IV with the same key would break security.
 
 **Best Practice Note**:  
 In production, never hard-code or log keys. Use secure key derivation (e.g., `crypto.scrypt` or `PBKDF2`) from a strong passphrase, or proper key management systems (KMS). Here we use `randomBytes` for simplicity and maximum entropy.
