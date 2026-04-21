@@ -4,7 +4,7 @@
 
 Each type will have it's secure code version presented in a folder of the same name.
 
-## Broken Access Control
+## 1 Broken Access Control
 (Samples 1 & 2)
 
 Flaw: the endpoints allow any user to view another profile by simply changing the userId in the URL. There are no checks to enforce that the requester is accessing their own data.
@@ -14,7 +14,7 @@ Secured version:
     - uses least privilege and "deny by default" methods
     - prevents unauthorized data access    
 
-## Cryptographic Failures
+## 2 Cryptographic Failures
 (Samples 3 & 4)
 
 FLaw: These samples use outdated hash algorithms that are vulnerable to collision attacks and other brute force attacks.
@@ -25,7 +25,7 @@ Secured version:
     - prevents offline cracking
     - prevents rainbow table attacks
 
-## Injection
+## 3 Injection
 (Samples 5 & 6)
 
 Flaw: User input is directly passed into queries without sanitization. This is vulernable to injection attacks.
@@ -34,7 +34,7 @@ Secured version:
     - uses input validation
     - uses escaping or parameterized queries
 
-## Insecure Design
+## 4 Insecure Design
 (Sample 7)
 
 Flaw: The password reset doesn't have verificaiton. This allows anyone with an email to reset an accounts password at any time.
@@ -42,7 +42,7 @@ Flaw: The password reset doesn't have verificaiton. This allows anyone with an e
 Secured version:
     - adds toekn-based verification, password strength checks and notification
 
-## Software and Data Integrity Failures
+## 5 Software and Data Integrity Failures
 (Sample 8)
 
 Flaw: This loads external scripts or librarires without integrity verification.
@@ -50,7 +50,7 @@ Flaw: This loads external scripts or librarires without integrity verification.
 Secured version:
     - SRI (Subresource Integity) makes sure the external script is original and not tampered with by an attacker
 
-## Server-Side Request Forgery
+## 6 Server-Side Request Forgery
 (Sample 9)
 
 Flaw: The server is allowed to make any URL request made by the user. This allows attackers the ability to attack internal services.
@@ -60,7 +60,7 @@ Secured version:
     - validates scheme
     - has a timeout to prevent network access and SSRF attacks
 
-## Identification and Authentiacation Failures
+## 7 Identification and Authentiacation Failures
 (Sample 10)
 
 Flaw: Plain-text comparision of the password. Has no rate limit allowing unlimited attempts. 
