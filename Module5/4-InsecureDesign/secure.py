@@ -16,7 +16,7 @@ def reset_password():
     if len(new_password) < 12:
         return jsonify({"error": "Password too weak"}), 400
 
-    user.password = hash_password(new_password)   # Use secure hashing from A02
+    user.password = hash_password(new_password)
     db.session.commit()
 
     # Notify user of password change
