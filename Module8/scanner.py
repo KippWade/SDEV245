@@ -67,22 +67,28 @@ def shouldSkip(path: Path) -> bool:
 def fileScanner(filePath: Path) -> List[Dict[str, Any]]:
     findings = []
     try:
+        print(f"Scanning file: {filePath}")  # ← Added for debugging
+        
         with open(filePath, 'r', encoding='utf-8', errors='ignore') as f:
-            for line_num, line in enumerate(f, 1):
+            content = f.read()
+            lines = content.splitlines()
+            
+            for line_num, line in enumerate(lines, 1):
                 for pattern, name in PATTERNS:
                     for match in pattern.finditer(line):
                         secret = match.group(0)
-                        # Output mask showing first/last few chars
                         masked = secret[:8] + '...' + secret[-4:] if len(secret) > 12 else secret
                         findings.append({
                             'file': str(filePath),
                             'line': line_num,
                             'pattern': name,
                             'matched': masked,
-                            'full_match': secret[:200]  # truncated
+                            'full_match': secret[:200]
                         })
     except Exception as e:
-        logging.warning(f"Could not read {filePath}: {e}")
+        logging.error(f"Could not read {filePath}: {e}")
+        print(f"Error reading file: {e}")
+    
     return findings
 
 # Scan a directory for secrets
@@ -121,8 +127,10 @@ def main():
     logging.info(f"Starting scan of {target}")
     
     if target.is_file():
+        print(f"→ Scanning single file: {target}")
         findings = fileScanner(target)
     else:
+        print(f"→ Scanning directory: {target}")
         findings = directoryScanner(target)
     
     if findings:
