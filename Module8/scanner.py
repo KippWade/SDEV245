@@ -6,23 +6,22 @@ import re
 import sys
 from pathlib import Path
 from typing import List, Dict, Any
+from colorama import init, Fore, Style
 
-try:
-    from colorama import init, Fore, Style
-    init(autoreset=True)
-except ImportError:
-    # Fallback if colorama is not installed
-    class Fore:
-        RED = ''
-        YELLOW = ''
-        GREEN = ''
-    class Style:
-        RESET_ALL = ''
+init(autoreset=True)
 
-# Logging setup
+# Logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Regex patterns (minimum 5+, based on common sources like Gitleaks, GitHub, etc.)
+# Regex patterns sources:
+# - AWS: AWS Acceess Key Id, AWS Secret Access Key
+# - GitHub: GhtHub PATs (Personal Access Tokens)
+# - Stripe: Stripe API Keys
+# - Google: Google API Keys
+# - Generic high-entropy tokens/passwords with context (e.g. "password=...", "api
+# - Private Keys: PEM blocks for RSA, OpenSSH, EC, DSA, PGP
+# - JWT Tokens: JSON Web Tokens
+# - Slack Tokens: Slack Bot/User Tokens
 PATTERNS = [
     # AWS
     (re.compile(r'AKIA[0-9A-Z]{16}'), "AWS Access Key ID"),
@@ -52,55 +51,59 @@ PATTERNS = [
     (re.compile(r'xox[baprs]-([0-9a-zA-Z]{10,48})?'), "Slack Token"),
 ]
 
-# File extensions/filenames to skip
-SKIP_EXTENSIONS = {'.png', '.jpg', '.jpeg', '.gif', '.pdf', '.zip', '.exe', '.bin'}
+# Skip filenames and types that probably won't have secrets
+SKIP_EXTENSION_TYPES = {'.png', '.jpg', '.jpeg', '.gif', '.pdf', '.zip', '.exe', '.bin'}
 SKIP_FILENAMES = {'node_modules', '.git', 'venv', 'env', '__pycache__'}
 
-def should_skip(path: Path) -> bool:
+# Function to determine if a file or directory should be skipped
+def shouldSkip(path: Path) -> bool:
     if path.is_dir() and any(skip in path.name for skip in SKIP_FILENAMES):
         return True
-    if path.suffix.lower() in SKIP_EXTENSIONS:
+    if path.suffix.lower() in SKIP_EXTENSION_TYPES:
         return True
     return False
 
-def scan_file(file_path: Path) -> List[Dict[str, Any]]:
+# Scan a single file for secrets
+def fileScanner(filePath: Path) -> List[Dict[str, Any]]:
     findings = []
     try:
-        with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+        with open(filePath, 'r', encoding='utf-8', errors='ignore') as f:
             for line_num, line in enumerate(f, 1):
                 for pattern, name in PATTERNS:
                     for match in pattern.finditer(line):
                         secret = match.group(0)
-                        # Mask for output (show first/last few chars)
+                        # Output mask showing first/last few chars
                         masked = secret[:8] + '...' + secret[-4:] if len(secret) > 12 else secret
                         findings.append({
-                            'file': str(file_path),
+                            'file': str(filePath),
                             'line': line_num,
                             'pattern': name,
                             'matched': masked,
                             'full_match': secret[:200]  # truncated
                         })
     except Exception as e:
-        logging.warning(f"Could not read {file_path}: {e}")
+        logging.warning(f"Could not read {filePath}: {e}")
     return findings
 
-def scan_directory(dir_path: Path) -> List[Dict[str, Any]]:
+# Scan a directory for secrets
+def directoryScanner(dirPath: Path) -> List[Dict[str, Any]]:
     all_findings = []
-    for root, dirs, files in os.walk(dir_path):
-        # Prune directories in-place
-        dirs[:] = [d for d in dirs if not should_skip(Path(root) / d)]
+    for root, dirs, files in os.walk(dirPath):
+        dirs[:] = [d for d in dirs if not shouldSkip(Path(root) / d)]
         
         for file in files:
             file_path = Path(root) / file
-            if should_skip(file_path):
+            if shouldSkip(file_path):
                 continue
             logging.info(f"Scanning {file_path}")
-            findings = scan_file(file_path)
+            findings = fileScanner(file_path)
             all_findings.extend(findings)
     return all_findings
 
+# Main function to parse arguments and run the scanner
 def main():
-    parser = argparse.ArgumentParser(description="Secret Scanner - Detect hardcoded secrets")
+    # -- CLI Argument Parsing --
+    parser = argparse.ArgumentParser(description="SDEV 245 - Module 8 - Secret Scanner")
     parser.add_argument("path", help="File or directory path to scan")
     parser.add_argument("--output", "-o", help="Output JSON report file")
     parser.add_argument("--verbose", "-v", action="store_true", help="Verbose logging")
@@ -118,9 +121,9 @@ def main():
     logging.info(f"Starting scan of {target}")
     
     if target.is_file():
-        findings = scan_file(target)
+        findings = fileScanner(target)
     else:
-        findings = scan_directory(target)
+        findings = directoryScanner(target)
     
     if findings:
         print(f"\n{Fore.RED}Potential secrets found:{Style.RESET_ALL}\n")

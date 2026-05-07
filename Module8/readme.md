@@ -1,21 +1,22 @@
 # Secret Scanner CLI
 
-A simple, fast Python tool to detect hardcoded secrets in code.
+A simple, Python tool to detect hardcoded secrets in code.
 
 ## Detection Logic
-- **Regex-based**: Uses curated patterns for high-confidence matches (AWS, GitHub, Stripe, JWT, private keys, generic tokens, etc.).
-- Sources inspired by Gitleaks, GitHub secret scanning, and public regex databases.
+- **Regex-based**: Uses patterns from regextokens repository for matches (AWS, GitHub, Stripe, JWT, private keys, generic tokens, etc.).
 - Context-aware where possible (keywords near values).
-- Skips binaries, large/irrelevant dirs.
+- Ignores binaries, irrelevant dirs.
 
 ## Usage
-See above.
+# Help
+python scanner.py --help
 
-## Extending Patterns
-Edit the `PATTERNS` list in `secret_scanner.py`. Add more from [secrets-patterns-db](https://github.com/mazen160/secrets-patterns-db) or Gitleaks configs.
+# Scan a directory
+python scanner.py ../module8
 
-## Limitations & Improvements
-- False positives possible (especially generic pattern).
-- No validation against live APIs.
-- Future: Add entropy scoring, ignore lists, Git integration.
+# Scan a single file
+python scanner.py test_file.py
+
+# Scan and save JSON report
+python scanner.py ../module8 --output findings.json
 
